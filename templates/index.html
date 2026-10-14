@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome | Smart Table{% endblock %}
+
+{% block content %}
+
+<section class="welcome-section">
+    <p class="eyebrow">YOUR TABLE, YOUR CHOICE</p>
+
+    <h1>Good food.<br>Good company.</h1>
+
+    <p class="intro">
+        Welcome! What would you like to do today?
+    </p>
+</section>
+
+<section class="action-list">
+
+    <a href="{{ url_for('menu') }}"
+       class="action-card"
+       id="new-order">
+
+        <div>
+            <h2>New order</h2>
+            <p>Explore the menu and order your favourites.</p>
+        </div>
+
+        <span class="arrow">↗</span>
+    </a>
+
+    <a href="{{ url_for('help_page') }}"
+       class="action-card"
+       id="help-option">
+
+        <div>
+            <h2>Need help?</h2>
+            <p>Request assistance from our staff.</p>
+        </div>
+
+        <span class="arrow">↗</span>
+    </a>
+
+    <a href="{{ url_for('bill') }}"
+       class="action-card"
+       id="bill-option">
+
+        <div>
+            <h2>Your bill</h2>
+            <p>View your bill and payment options.</p>
+        </div>
+
+        <span class="arrow">↗</span>
+    </a>
+
+</section>
+
+{% endblock %}
