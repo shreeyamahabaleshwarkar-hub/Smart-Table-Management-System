@@ -3,13 +3,117 @@
 {% block title %}Menu | Smart Table{% endblock %}
 
 {% block content %}
-<section>
-    <p class="eyebrow">THE MENU</p>
-    <h1>Explore our menu.</h1>
-    <p class="intro">Our digital menu will appear here.</p>
 
-    <a href="{{ url_for('home') }}" class="back-link">
-        ← Back to home
-    </a>
+<section class="menu-heading">
+    <p class="eyebrow">MADE FOR YOUR TABLE</p>
+
+    <h1>Explore our menu.</h1>
+
+    <p class="intro">
+        Choose your favourites and build your order.
+    </p>
 </section>
+
+{% if error %}
+<div class="message error-message" id="order-error" role="alert">
+    {{ error }}
+</div>
+{% endif %}
+
+<form action="{{ url_for('place_order') }}"
+      method="POST"
+      id="order-form">
+
+    {% for category in ["Starters", "Main Course", "Breads", "Rice"] %}
+
+        {% set category_items = menu_items
+            | selectattr("category", "equalto", category)
+            | list %}
+
+        {% if category_items %}
+        <section class="menu-category">
+
+            <h2>{{ category }}</h2>
+
+            <div class="menu-list">
+
+                {% for item in category_items %}
+                <article class="menu-item">
+
+                    <div class="menu-item-info">
+                        <h3>{{ item.name }}</h3>
+                        <p class="item-price">₹{{ item.price }}</p>
+                    </div>
+
+                    <div class="quantity-control">
+
+                        <button
+                            type="button"
+                            class="quantity-button"
+                            data-action="decrease"
+                            data-item-id="{{ item.id }}"
+                            aria-label="Decrease {{ item.name }} quantity"
+                        >−</button>
+
+                        <input
+                            type="number"
+                            name="quantity_{{ item.id }}"
+                            id="quantity-{{ item.id }}"
+                            class="quantity-input"
+                            value="0"
+                            min="0"
+                            max="10"
+                            data-price="{{ item.price }}"
+                            aria-label="{{ item.name }} quantity"
+                        >
+
+                        <button
+                            type="button"
+                            class="quantity-button"
+                            data-action="increase"
+                            data-item-id="{{ item.id }}"
+                            aria-label="Increase {{ item.name }} quantity"
+                        >+</button>
+
+                    </div>
+
+                </article>
+                {% endfor %}
+
+            </div>
+        </section>
+        {% endif %}
+
+    {% endfor %}
+
+    <section class="cart-summary">
+
+        <div>
+            <p class="summary-label">YOUR ORDER</p>
+
+            <p class="cart-count">
+                Items selected: <span id="item-count">0</span>
+            </p>
+
+            <p class="total-amount">
+                Total: ₹<span id="cart-total">0.00</span>
+            </p>
+        </div>
+
+        <button
+            type="submit"
+            class="primary-button"
+            id="place-order"
+        >
+            Place Order
+        </button>
+
+    </section>
+
+</form>
+
+<a href="{{ url_for('home') }}" class="back-link">
+    ← Back to home
+</a>
+
 {% endblock %}

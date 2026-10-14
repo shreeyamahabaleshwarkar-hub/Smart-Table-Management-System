@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}Order Confirmation | Smart Table{% endblock %}
+
+{% block content %}
+
+<section class="confirmation-section">
+
+    <p class="eyebrow">ORDER CONFIRMED</p>
+
+    <h1>Thank you.</h1>
+
+    <p class="intro">
+        Your order has been received successfully.
+    </p>
+
+    <div class="confirmation-card">
+
+        <p class="summary-label">ORDER REFERENCE</p>
+
+        <h2 id="order-reference">{{ order_id }}</h2>
+
+        <h3>Order summary</h3>
+
+        {% for item in cart %}
+
+        <div class="confirmation-item">
+
+            <span>
+                {{ item.name }} × {{ item.quantity }}
+            </span>
+
+            <span>
+                ₹{{ "%.2f"|format(item.subtotal) }}
+            </span>
+
+        </div>
+
+        {% endfor %}
+
+        <div class="confirmation-total">
+
+            <span>Total</span>
+
+            <span id="order-total">
+                ₹{{ "%.2f"|format(total) }}
+            </span>
+
+        </div>
+
+    </div>
+
+    <a href="{{ url_for('home') }}"
+       class="primary-button home-button">
+        Return to home
+    </a>
+
+</section>
+
+{% endblock %}

@@ -158,3 +158,62 @@ h1 {
 .back-link:hover {
     text-decoration: underline;
 }
+/* Hide number input spinner arrows */
+
+.quantity-input {
+    appearance: textfield;
+    -moz-appearance: textfield;
+}
+
+.quantity-input::-webkit-inner-spin-button,
+.quantity-input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+/* Order confirmation page */
+
+.confirmation-section {
+    width: 100%;
+}
+
+.confirmation-card {
+    margin-top: 30px;
+    padding: 25px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+}
+
+.confirmation-card h2 {
+    margin-top: 5px;
+    font-size: 22px;
+    letter-spacing: 1px;
+}
+
+.confirmation-card h3 {
+    margin-top: 30px;
+    font-size: 15px;
+}
+
+.confirmation-item,
+.confirmation-total {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+}
+
+.confirmation-total {
+    border-bottom: none;
+    font-size: 16px;
+    font-weight: 600;
+    padding-top: 20px;
+}
+
+.home-button {
+    display: inline-block;
+    margin-top: 25px;
+    text-decoration: none;
+}
