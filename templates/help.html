@@ -1,15 +1,46 @@
 {% extends "base.html" %}
 
-{% block title %}Help | Smart Table{% endblock %}
+{% block title %}Request Help | Smart Table{% endblock %}
 
 {% block content %}
-<section>
-    <p class="eyebrow">CUSTOMER ASSISTANCE</p>
-    <h1>How can we help?</h1>
-    <p class="intro">The assistance request form will appear here.</p>
 
-    <a href="{{ url_for('home') }}" class="back-link">
-        ← Back to home
-    </a>
+<section class="help-section">
+    <p class="eyebrow">WE'RE HERE TO HELP</p>
+    <h1>How can we help?</h1>
+    <p class="intro">Send a request and our staff will assist you shortly.</p>
+
+    {% if success %}
+    <div class="message success-message" role="status">
+        {{ success }}
+    </div>
+    {% endif %}
+
+    <form action="{{ url_for('help_page') }}" method="POST" class="help-form">
+        <label for="help-reason">What do you need help with?</label>
+
+        <select name="reason" id="help-reason" required>
+            <option value="">Select a reason</option>
+            <option value="Need assistance">Need assistance</option>
+            <option value="Question about menu">Question about menu</option>
+            <option value="Order-related issue">Order-related issue</option>
+            <option value="Other">Other</option>
+        </select>
+
+        <label for="help-message">Additional details (optional)</label>
+        <textarea
+            name="message"
+            id="help-message"
+            rows="4"
+            maxlength="300"
+            placeholder="Tell us a little more..."
+        ></textarea>
+
+        <button type="submit" class="primary-button" id="request-help">
+            Request Assistance
+        </button>
+    </form>
+
+    <a href="{{ url_for('home') }}" class="back-link">← Back to home</a>
 </section>
-{% endblock %} 
+
+{% endblock %}

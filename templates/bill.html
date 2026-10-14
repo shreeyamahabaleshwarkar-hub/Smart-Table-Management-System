@@ -3,13 +3,103 @@
 {% block title %}Your Bill | Smart Table{% endblock %}
 
 {% block content %}
-<section>
-    <p class="eyebrow">BILLING</p>
-    <h1>Your bill.</h1>
-    <p class="intro">Your bill and payment options will appear here.</p>
 
-    <a href="{{ url_for('home') }}" class="back-link">
-        ← Back to home
-    </a>
+<section class="bill-section">
+    <p class="eyebrow">YOUR TABLE, YOUR BILL</p>
+    <h1>Time to settle up.</h1>
+    <p class="intro">Review your bill and choose a payment method.</p>
+
+    {% if error %}
+    <div class="message error-message" role="alert">
+        {{ error }}
+    </div>
+    {% endif %}
+
+    {% if success %}
+    <div class="message success-message" id="payment-success" role="status">
+        {{ success }}
+    </div>
+    {% endif %}
+
+    <div class="bill-card">
+        <div class="bill-card-heading">
+            <div>
+                <p class="summary-label">SMART TABLE</p>
+                <h2>Table 04</h2>
+            </div>
+            <span class="bill-status">Demo bill</span>
+        </div>
+     <div class="bill-row">
+    <span>Order reference</span>
+    <span>
+        {{ order_reference if order_reference else "No order yet" }}
+    </span>
+</div>
+
+{% for item in bill_items %}
+<div class="bill-row">
+    <span>{{ item.name }} × {{ item.quantity }}</span>
+    <span>₹{{ "%.2f"|format(item.subtotal) }}</span>
+</div>
+{% endfor %}
+
+<div class="bill-total">
+    <span>Total amount</span>
+    <span id="bill-total">₹{{ "%.2f"|format(bill_total) }}</span>
+</div>
+
+    </div>
+
+    <form action="{{ url_for('bill') }}" method="POST" class="payment-form">
+        <h2>Choose payment method</h2>
+
+        <label class="payment-option">
+            <input type="radio" name="payment_method" value="UPI" required>
+            <span>
+                <strong>UPI / QR Code</strong>
+                <small>Scan a demo QR code</small>
+            </span>
+        </label>
+
+        <label class="payment-option">
+            <input type="radio" name="payment_method" value="Cash" required>
+            <span>
+                <strong>Cash</strong>
+                <small>Pay at the counter</small>
+            </span>
+        </label>
+
+        <button type="submit" class="primary-button" id="pay-button">
+            Confirm Payment Method
+        </button>
+    </form>
+
+    {% if payment_method == "UPI" %}
+    <div class="demo-payment" id="demo-payment">
+        <h2>Demo QR Payment</h2>
+        <div class="demo-qr" role="img" aria-label="Demo QR pattern">
+            <span>DEMO</span>
+        </div>
+        <p>This is a demonstration only. No real payment will be processed.</p>
+        <form action="{{ url_for('bill') }}" method="POST">
+            <input type="hidden" name="payment_method" value="UPI">
+            <input type="hidden" name="confirm_demo" value="yes">
+            <button type="submit" class="primary-button">
+                Simulate Payment Success
+            </button>
+        </form>
+    </div>
+    {% elif payment_method == "Cash" %}
+    <div class="demo-payment">
+        <h2>Cash selected</h2>
+        <p>
+    Please pay ₹{{ "%.2f"|format(bill_total) }} at the counter.
+    Payment is not marked as completed.
+</p>
+    </div>
+    {% endif %}
+
+    <a href="{{ url_for('home') }}" class="back-link">← Back to home</a>
 </section>
+
 {% endblock %}
